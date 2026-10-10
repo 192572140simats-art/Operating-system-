@@ -1,0 +1,60 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+struct message {
+    long type;
+    char text[100];
+};
+
+int main() {
+    int msgid;
+    struct message msg;
+    pid_t pid;
+
+    msgid = msgget(IPC_PRIVATE, IPC_CREAT | 0666);
+
+    if (msgid == -1) {
+        perror("msgget");
+        return 1;
+    }
+
+    pid = fork();
+
+    if (pid > 0) {
+        msg.type = 1;
+
+        snprintf(msg.text, sizeof(msg.text),
+                 "Hello from parent process!");
+
+        if (msgsnd(msgid, &msg, sizeof(msg.text), 0) == -1) {
+            perror("msgsnd");
+            wait(NULL);
+            msgctl(msgid, IPC_RMID, NULL);
+            return 1;
+        }
+
+        wait(NULL);
+        msgctl(msgid, IPC_RMID, NULL);
+
+    } else if (pid == 0) {
+        if (msgrcv(msgid, &msg, sizeof(msg.text), 1, 0) == -1) {
+            perror("msgrcv");
+            exit(1);
+        }
+
+        printf("Message received: %s\n", msg.text);
+        exit(0);
+
+    } else {
+        perror("fork");
+        msgctl(msgid, IPC_RMID, NULL);
+        return 1;
+    }
+
+    return 0;
+}
