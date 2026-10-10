@@ -1,0 +1,58 @@
+
+#include <stdio.h>
+
+int main() {
+    int n, i, time = 0, completed = 0;
+    int at[20], bt[20], pr[20], rem[20];
+    int wt[20], tat[20], ct[20];
+
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter arrival time, burst time and priority for P%d: ", i + 1);
+        scanf("%d %d %d", &at[i], &bt[i], &pr[i]);
+        rem[i] = bt[i];
+    }
+
+    while (completed < n) {
+        int idx = -1;
+
+        for (i = 0; i < n; i++) {
+            if (at[i] <= time && rem[i] > 0) {
+                if (idx == -1 || pr[i] < pr[idx]) {
+                    idx = i;
+                }
+            }
+        }
+
+        if (idx == -1) {
+            time++;
+            continue;
+        }
+
+        rem[idx]--;
+        time++;
+
+        if (rem[idx] == 0) {
+            completed++;
+            ct[idx] = time;
+            tat[idx] = ct[idx] - at[idx];
+            wt[idx] = tat[idx] - bt[idx];
+        }
+    }
+
+    printf("\n------------------------------------------------\n");
+    printf("%-10s %-12s %-12s\n",
+           "Process", "Waiting", "Turnaround");
+    printf("------------------------------------------------\n");
+
+    for (i = 0; i < n; i++) {
+        printf("P%-9d %-12d %-12d\n",
+               i + 1, wt[i], tat[i]);
+    }
+
+    printf("------------------------------------------------\n");
+
+    return 0;
+}
