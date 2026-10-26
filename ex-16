@@ -1,0 +1,37 @@
+
+
+#include <stdio.h>
+
+struct Employee {
+    int id;
+    char name[20];
+    float salary;
+};
+
+int main() {
+    struct Employee e[10];
+    int n, pos, i;
+
+    printf("Enter number of employees: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter ID, name and salary: ");
+        scanf("%d %19s %f",
+              &e[i].id, e[i].name, &e[i].salary);
+    }
+
+    printf("Enter record position (1 to %d): ", n);
+    scanf("%d", &pos);
+
+    if (pos < 1 || pos > n) {
+        printf("Invalid position\n");
+    } else {
+        printf("\nEmployee Details\n");
+        printf("ID: %d\n", e[pos-1].id);
+        printf("Name: %s\n", e[pos-1].name);
+        printf("Salary: %.2f\n", e[pos-1].salary);
+    }
+
+    return 0;
+}
