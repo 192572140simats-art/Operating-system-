@@ -1,0 +1,74 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char users[5][20], files[5][5][20];
+    char user[20], file[20];
+    int count[5] = {0}, n = 0, ch, i, j, u;
+
+    while (1) {
+        printf("\n1.Create User 2.Create File 3.Display 4.Exit\n");
+        scanf("%d", &ch);
+
+        if (ch == 1) {
+            if (n == 5) {
+                printf("User limit reached\n");
+                continue;
+            }
+            printf("Enter user name: ");
+            scanf("%19s", user);
+            for (i = 0; i < n; i++)
+                if (strcmp(users[i], user) == 0)
+                    break;
+
+            if (i < n)
+                printf("User already exists\n");
+            else {
+                strcpy(users[n++], user);
+                printf("User created\n");
+            }
+        }
+        else if (ch == 2) {
+            printf("Enter user name: ");
+            scanf("%19s", user);
+            for (u = 0; u < n; u++)
+                if (strcmp(users[u], user) == 0)
+                    break;
+
+            if (u == n) {
+                printf("User not found\n");
+                continue;
+            }
+
+            if (count[u] == 5) {
+                printf("Directory full\n");
+                continue;
+            }
+
+            printf("Enter file name: ");
+            scanf("%19s", file);
+
+            for (j = 0; j < count[u]; j++)
+                if (strcmp(files[u][j], file) == 0)
+                    break;
+
+            if (j < count[u])
+                printf("File already exists\n");
+            else {
+                strcpy(files[u][count[u]++], file);
+                printf("File created\n");
+            }
+        }
+        else if (ch == 3) {
+            for (i = 0; i < n; i++) {
+                printf("\nUser: %s\n", users[i]);
+                for (j = 0; j < count[i]; j++)
+                    printf("  %s\n", files[i][j]);
+            }
+        }
+        else
+            break;
+    }
+    return 0;
+}
