@@ -1,0 +1,31 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char lines[5][100] = {
+        "Operating System",
+        "Process Management",
+        "File Management",
+        "Memory Management",
+        "Computer Networks"
+    };
+
+    char word[30];
+    int i, found = 0;
+
+    printf("Enter word to search: ");
+    scanf("%29s", word);
+
+    for (i = 0; i < 5; i++) {
+        if (strstr(lines[i], word) != NULL) {
+            printf("%s\n", lines[i]);
+            found = 1;
+        }
+    }
+
+    if (found == 0)
+        printf("Word not found\n");
+
+    return 0;
+}
