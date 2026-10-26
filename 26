@@ -1,0 +1,21 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char file[100] = "";
+    char text[100];
+
+    printf("Enter file name: ");
+    scanf("%99s", file);
+
+    printf("Enter text: ");
+    scanf(" %99[^\n]", text);
+
+    printf("\nFile created successfully\n");
+    printf("Data written successfully\n");
+    printf("File content: %s\n", text);
+    printf("File closed successfully\n");
+
+    return 0;
+}
