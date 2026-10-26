@@ -1,0 +1,30 @@
+
+#include <stdio.h>
+#include <pthread.h>
+
+int count = 0;
+pthread_mutex_t mutex;
+
+void *task(void *arg) {
+    int i;
+    for (i = 0; i < 1000; i++) {
+        pthread_mutex_lock(&mutex);
+        count++;
+        pthread_mutex_unlock(&mutex);
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+    pthread_mutex_init(&mutex, NULL);
+
+    pthread_create(&t1, NULL, task, NULL);
+    pthread_create(&t2, NULL, task, NULL);
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("Final count = %d\n", count);
+    pthread_mutex_destroy(&mutex);
+    return 0;
+}
