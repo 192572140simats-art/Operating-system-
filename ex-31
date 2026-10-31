@@ -1,0 +1,28 @@
+
+#include <stdio.h>
+int main()
+{
+    int n,f,p[30],a[10],i,j,k=0,h=0;
+    printf("Enter number of pages: ");
+    scanf("%d",&n);
+    printf("Enter pages: ");
+    for(i=0;i<n;i++) scanf("%d",&p[i]);
+    printf("Enter frames: ");
+    scanf("%d",&f);
+    for(i=0;i<f;i++) a[i]=-1;
+
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<f;j++)
+            if(a[j]==p[i]) break;
+
+        if(j==f)
+        {
+            a[k]=p[i];
+            k=(k+1)%f;
+            h++;
+        }
+    }
+    printf("Page Faults = %d",h);
+    return 0;
+}
